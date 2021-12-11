@@ -8,13 +8,11 @@
 # Usage: python weather_scrapper.py                                           # 
 #        Code will ask for city location                                      #
 # Input Format: city name, state(optional)                                    #
-# Output Format: Pandas DataFrame (Index, Period, Short Description, Temp (°F)#
-#                , Description, Temp(int), Temp (°C), is_night)               #
 ###############################################################################
 # By: Ka Hung Lee                                                             #
-# Programming Language: Python                                                #
-# Version: 1.1                                                                #
-# Date: 12/10/2021                                                            #
+# Programming Language: Python3                                               #
+# Version: 1.2                                                                #
+# Date: 12/11/2021                                                            #
 ###############################################################################
 
 # Import Dependencies
@@ -24,27 +22,72 @@ import numpy as np
 from bs4 import BeautifulSoup
 from geopy.geocoders import Nominatim
 
-# Retrieving your location
+# Retrieve location coordinates
 address = input("Enter city name: ")
 geolocator = Nominatim(user_agent="my_application")
 location = geolocator.geocode(address)
+
 print("----------------------------------------------------------------------") 
 print("Obtaining geo-coordinates for: {}...".format(location.address))
+print("----------------------------------------------------------------------")
+
 loc_lat = round(location.latitude, 4)
 loc_long = round(location.longitude, 4)
-print("Location latitude: {}".format(loc_lat))
-print("Location longitude: {}".format(loc_long))
 
-# Weather page of interest
-link = "https://forecast.weather.gov/MapClick.php?lat=" + str(loc_lat) + \
-"&lon=" + str(loc_long)
+print("Location Coordinates")
+print("Location Latitude: {}".format(loc_lat))
+print("Location Longitude: {}".format(loc_long))
+
+# Retrieve weather source
+link = ("https://forecast.weather.gov/MapClick.php?lat=" 
+        + str(loc_lat)
+        + "&lon="
+        + str(loc_long))
+
 page = requests.get(link)
-print("----------------------------------------------------------------------") 
-print("Web status: {}".format(page.status_code))
 
-# Forecast Parser
+print("----------------------------------------------------------------------") 
+print("Server Status")
+print("Response: {}".format(page.status_code))
+print("----------------------------------------------------------------------") 
+
+# Parse Webpage
 soup = BeautifulSoup(page.content, "html.parser")
 
+# Retrieve Current Weather Conditions and Details
+current_conditions = soup.find(id="current_conditions-summary")
+current_cond_detailed = soup.find(id="current_conditions_detail")
+
+current_weather = (current_conditions
+                   .find(class_="myforecast-current")
+                   .get_text())
+current_temp_F = (current_conditions
+                  .find(class_="myforecast-current-lrg")
+                  .get_text())
+current_temp_C = (current_conditions
+                  .find(class_="myforecast-current-sm")
+                  .get_text())
+
+print("Current Weather Status")
+print("Weather: {}".format(current_weather))
+print("Temperature (°F): {}".format(current_temp_F))
+print("Temperature (°C): {}".format(current_temp_C))
+print("")
+
+details = []
+
+for detail in current_cond_detailed.find_all("tr"):
+    details.append(detail.find_all("td"))
+
+print("Current Weather Details")
+for detail in list(details):
+    if detail[0].get_text() == "Last update":
+        print("")
+        print("{}: {}".format(detail[0].get_text(), detail[1].get_text()))
+    else:
+        print("{}: {}".format(detail[0].get_text(), detail[1].get_text()))
+
+# Retrieve Weather Advisories and Forecasts
 seven_day_forecast = soup.find(id="seven-day-forecast-body")
 forecast_items = seven_day_forecast.find_all(class_="tombstone-container")
 
@@ -53,20 +96,20 @@ short_desc = []
 temp = []
 desc = []
 
-for item in forecast_items:
+for forecast in forecast_items:
     try:
-        period.append(item.find(class_="period-name").get_text())
+        period.append(forecast.find(class_="period-name").get_text())
     except AttributeError:
         period.append(np.nan)
     try:
-        short_desc.append(item.find(class_="short-desc").get_text())
+        short_desc.append(forecast.find(class_="short-desc").get_text())
     except AttributeError:
         short_desc.append(np.nan)
     try:
-        temp.append(item.find(class_="temp").get_text())
+        temp.append(forecast.find(class_="temp").get_text())
     except AttributeError:
         temp.append(np.nan)
-    img = item.find("img")
+    img = forecast.find("img")
     desc.append(img["title"])
 
 # Output Framework
