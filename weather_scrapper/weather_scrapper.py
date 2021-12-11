@@ -8,8 +8,8 @@
 # Usage: python weather_scrapper.py                                           # 
 #        Code will ask for city location                                      #
 # Input Format: city name, state(optional)                                    #
-# Output Format: Pandas DataFrame (Index, Period, Short Description, Temp(str)#
-#                , Description, Temp(int), is_night)                          #
+# Output Format: Pandas DataFrame (Index, Period, Short Description, Temp (°F)#
+#                , Description, Temp(int), Temp (°C), is_night)               #
 ###############################################################################
 # By: Ka Hung Lee                                                             #
 # Programming Language: Python                                                #
@@ -28,6 +28,7 @@ from geopy.geocoders import Nominatim
 address = input("Enter city name: ")
 geolocator = Nominatim(user_agent="my_application")
 location = geolocator.geocode(address)
+print("----------------------------------------------------------------------") 
 print("Obtaining geo-coordinates for: {}...".format(location.address))
 loc_lat = round(location.latitude, 4)
 loc_long = round(location.longitude, 4)
@@ -38,6 +39,7 @@ print("Location longitude: {}".format(loc_long))
 link = "https://forecast.weather.gov/MapClick.php?lat=" + str(loc_lat) + \
 "&lon=" + str(loc_long)
 page = requests.get(link)
+print("----------------------------------------------------------------------") 
 print("Web status: {}".format(page.status_code))
 
 # Forecast Parser
@@ -67,6 +69,7 @@ for item in forecast_items:
     img = item.find("img")
     desc.append(img["title"])
 
+# Output Framework
 weather_df = pd.DataFrame({"Period": period,
                            "Short Description": short_desc,
                            "Temp (°F)": temp,
@@ -85,7 +88,7 @@ weather_df["Temp"] = weather_df["Temp (°F)"].str.extract('(\d+)').astype(int)
 temp_C = round((5./9) * (weather_df["Temp"] - 32), 0)
 weather_df["Temp (°C)"] = temp_C.astype(int)
 
-is_night = weather_df["Period"].str.contains("Night")
+is_night = weather_df["Period"].str.contains("ight")
 weather_df["is_night"] = is_night
 
 print("Weather Forecasts:")
