@@ -11,7 +11,7 @@
 ###############################################################################
 # By: Ka Hung Lee                                                             #
 # Programming Language: Python3                                               #
-# Version: 1.2                                                                #
+# Version: 1.2.1                                                              #
 # Date: 12/11/2021                                                            #
 ###############################################################################
 
@@ -121,7 +121,10 @@ weather_df = pd.DataFrame({"Period": period,
 weather_advisories = weather_df[weather_df["Temp (°F)"].isna()]
 print("----------------------------------------------------------------------") 
 print("Weather Advisories:")
-print(weather_advisories)
+if weather_advisories.empty == True:
+    print("No advisories at this time.")
+else:
+    print(weather_advisories)
 
 print("----------------------------------------------------------------------")
 
