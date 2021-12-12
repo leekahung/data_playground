@@ -7,6 +7,10 @@ A user can use the program to assess what the current weather conditions are
 in a perticular area, including weather advisories and forecasts projected by  
 the Nation Weather Services on their webpage.
 
+# Current Version
+
+* 1.2.1
+
 # Python Libraries Used
 
 * requests - for interfacing with the website
