@@ -11,7 +11,7 @@
 ###############################################################################
 # By: Ka Hung Lee                                                             #
 # Programming Language: Python3                                               #
-# Version: 1.2.1                                                              #
+# Version: 1.3                                                                #
 # Date: 12/11/2021                                                            #
 ###############################################################################
 
@@ -23,9 +23,17 @@ from bs4 import BeautifulSoup
 from geopy.geocoders import Nominatim
 
 # Retrieve location coordinates
-address = input("Enter city name: ")
-geolocator = Nominatim(user_agent="my_application")
-location = geolocator.geocode(address)
+def get_location():
+    address = input("Enter city name in the US: ")
+    geolocator = Nominatim(user_agent="my_application")
+    location = geolocator.geocode(address)
+    while "United States" not in str(location):
+        address = input("Please enter a city in the US: ")
+        location = geolocator.geocode(address)
+    else:
+        return location
+
+location = get_location()
 
 print("----------------------------------------------------------------------") 
 print("Obtaining geo-coordinates for: {}...".format(location.address))
