@@ -9,7 +9,7 @@ the Nation Weather Services on their webpage.
 
 # Current Version
 
-* 1.2.1
+* 1.3.2
 
 # Python Libraries Used
 
@@ -18,3 +18,4 @@ the Nation Weather Services on their webpage.
 * numpy - to handle missing data
 * BeautifulSoup - for data collection & mining
 * geopy - to assess location coordinates
+* dateutils - to handle time and dates in data

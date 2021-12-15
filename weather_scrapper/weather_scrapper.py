@@ -11,7 +11,7 @@
 ###############################################################################
 # By: Ka Hung Lee                                                             #
 # Programming Language: Python3                                               #
-# Version: 1.3.1                                                              #
+# Version: 1.3.2                                                              #
 # Date: 12/11/2021                                                            #
 ###############################################################################
 
@@ -19,9 +19,9 @@
 import requests
 import pandas as pd
 import numpy as np
+import dateutil.parser as parser
 from bs4 import BeautifulSoup
 from geopy.geocoders import Nominatim
-from datetime import datetime
 
 # Retrieve location coordinates
 def get_location():
@@ -97,10 +97,8 @@ for detail in list(details):
     else:
         print("{}: {}".format(detail[0].get_text(), detail[1].get_text()))
 
-# Date Extraction (might be useful in the future)
-datetime_obj = datetime.strptime(date, "%d %b %I:%M %p %Z")
-curr_year = datetime.today().year
-datetime_curr = datetime_obj.replace(year=curr_year)
+# Date/Time Extraction (might be useful in the future)
+local_time = parser.parse(date, ignoretz=True)
 
 # Retrieve Weather Advisories and Forecasts
 seven_day_forecast = soup.find(id="seven-day-forecast-body")
