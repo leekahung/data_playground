@@ -6,13 +6,13 @@
 #              forecast.weather.gov                                           #
 ###############################################################################
 # Usage: python weather_scrapper.py                                           # 
-#        Code will ask for city location                                      #
+#        Code will ask for city location in the US                            #
 # Input Format: city name, state(optional)                                    #
 ###############################################################################
 # By: Ka Hung Lee                                                             #
 # Programming Language: Python3                                               #
-# Version: 1.3.2                                                              #
-# Date: 12/11/2021                                                            #
+# Version: 1.3.3                                                              #
+# Version Date: 12/16/2021                                                    #
 ###############################################################################
 
 # Import Dependencies
@@ -133,13 +133,13 @@ weather_df = pd.DataFrame({"Period": period,
                            "Description": desc})
 
 weather_advisories = weather_df[weather_df["Temp (°F)"].isna()]
+
 print("----------------------------------------------------------------------") 
 print("Weather Advisories:")
 if weather_advisories.empty == True:
     print("No advisories at this time.")
 else:
     print(weather_advisories)
-
 print("----------------------------------------------------------------------")
 
 weather_df.dropna(inplace=True)
