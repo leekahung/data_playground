@@ -9,11 +9,12 @@ the Nation Weather Services on their webpage.
 
 # Current Version
 
-* 1.3.2
+* 1.3.3
 
 # Python Libraries Used
 
 * requests - for interfacing with the website
+* re - for formatting specific strings
 * pandas - for formatting forecast data
 * numpy - to handle missing data
 * BeautifulSoup - for data collection & mining

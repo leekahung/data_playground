@@ -17,6 +17,7 @@
 
 # Import Dependencies
 import requests
+import re
 import pandas as pd
 import numpy as np
 import dateutil.parser as parser
@@ -149,6 +150,15 @@ weather_df["Temp (°C)"] = temp_C.astype(int)
 
 is_night = weather_df["Period"].str.contains("ight")
 weather_df["is_night"] = is_night
+
+# Defining function to add spaces before capitalized words in text
+def space_before_capital(text):
+   return re.sub(r"(\w)([A-Z])", r"\1 \2", text)
+
+for column in ["Period", "Short Description"]:
+    weather_df[column] = weather_df[column].apply(space_before_capital)
+
+weather_df = weather_df.set_index("Period")
 
 print("Weather Forecasts:")
 print(weather_df)
