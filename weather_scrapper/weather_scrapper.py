@@ -11,7 +11,7 @@
 ###############################################################################
 # By: Ka Hung Lee                                                             #
 # Programming Language: Python3                                               #
-# Version: 1.3.3                                                              #
+# Version: 1.3.4                                                              #
 # Version Date: 12/16/2021                                                    #
 ###############################################################################
 
@@ -153,10 +153,23 @@ weather_df["is_night"] = is_night
 
 # Defining function to add spaces before capitalized words in text
 def space_before_capital(text):
-   return re.sub(r"(\w)([A-Z])", r"\1 \2", text)
+    result = re.sub(r"(\w)([A-Z])", r"\1 \2", text)
+    # Special case to handle the string "then"
+    if "then" in result:
+        result = result.replace("then", " then")
+        if "  " in result:
+            result = result.replace("  ", " ")
+    return result
+
+# Defining function to remove extraneous spaces in Description
+def remove_extra_space(text):
+    result = text.split()
+    return ' '.join(result)
 
 for column in ["Period", "Short Description"]:
     weather_df[column] = weather_df[column].apply(space_before_capital)
+
+weather_df["Description"] = weather_df["Description"].apply(remove_extra_space)
 
 weather_df = weather_df.set_index("Period")
 
