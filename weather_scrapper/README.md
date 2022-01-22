@@ -9,7 +9,7 @@ the Nation Weather Services on their webpage.
 
 # Current Version
 
-* 1.3.4
+* 1.3.4 (1/21/2022)
 
 # Python Libraries Used
 
