@@ -1,0 +1,37 @@
+AngleSolver_Input
+
+atoms = 226
+steps = 2000
+MDfreq = 1
+Numberofparts = 1
+System = 0
+
+(For foursys); it's index+1 if your using VMD; for BBDD_A, L = 25, 45, 1, 21; R = 88, 108, 57, 77
+Atom1 = 88
+Atom2 = 108
+Atom3 = 57
+Atom4 = 77
+
+(For centsys); not currently in use, numbers acts as dummies
+Atom1 = 114
+Atom2 = 117
+Atom3 = 180
+Atom4 = 179
+Atom5 = 182
+Atom6 = 115
+Atom7 = 83
+Atom8 = 84
+Atom9 = 175
+Atom10 = 172
+Atom11 = 173
+Atom12 = 86
+
+(For pointsys); not currently in use, numbers acts as dummies
+Atom1 = 114
+Atom2 = 115
+Atom3 = 182
+Atom4 = 83
+Atom5 = 86
+Atom6 = 173
+
+TimeStep(fs*10) = 4 ; please ignore; this is for AngleSolverPlotter
